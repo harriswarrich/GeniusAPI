@@ -23,11 +23,11 @@ public final class App {
 
         //placeholder will be replaced with user input
         String s = "The Weeknd";
-        // Scanner input = new Scanner(System.in);
-        // String name = input.nextLine();
-        // String firstName = name.substring(0, name.indexOf(" " ));
-        // String lastName = name.substring(name.indexOf(" "  + 1), name.length());
-        // String url123 = ("https://genius.p.rapidapi.com/search?q=" + firstName + "%20"+ lastName);
+        Scanner input = new Scanner(System.in);
+        System.out.println("Enter artist's first name");
+        String firstName = input.nextLine();
+        System.out.println("Enter artist's last name, if applicable");
+        String lastName = input.nextLine();
 
         //format query
         String query = String.format("s=%s",
@@ -49,8 +49,12 @@ public final class App {
       URLEncoder.encode(i, charset));      
       // Json response
       // have user input first name and last name separately. Save first name and last name into 2 different variables. Use the variable's name to print the string unique to each user input.
-      String myUrl = "https://genius.p.rapidapi.com/search?q=Kendrick%20lamar";
-      response = Unirest.get (myUrl)
+      String myUrl = "https://genius.p.rapidapi.com/search?q=" + firstName;
+      if(lastName != "")
+      {
+        myUrl = myUrl + "%20"+ lastName;
+      }
+      response = Unirest.get(myUrl)
      .header("x-rapidapi-host", x_rapidapi_host)
      .header("x-rapidapi-key", x_rapidapi_key)
      .asJson();
