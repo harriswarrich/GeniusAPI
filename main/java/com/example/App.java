@@ -5,9 +5,20 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import java.util.ArrayList;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public final class App {
     private App() {
@@ -42,7 +53,7 @@ public final class App {
         System.out.println(response.getHeaders().get("Content-Type"));
 
         // Host, charset and headers vars should be the same        needs to be replaced with whatever the id is of the artist the user gives
-        String i = "f0cd37a82a3995b8763014dfc1356260";
+        String i = "727466";
 
         // Format query for preventing encoding problems
       query = String.format("i=%s",
@@ -59,11 +70,62 @@ public final class App {
      .header("x-rapidapi-key", x_rapidapi_key)
      .asJson();
 
-        //Prettifying
-     Gson gson = new GsonBuilder().setPrettyPrinting().create();
-     JsonParser jp = new JsonParser();
-     JsonElement je = jp.parse(response.getBody().toString());
-     String prettyJsonString = gson.toJson(je);
-     System.out.println(prettyJsonString);
+
+    JSONObject jsonObj = response.getBody().getObject();
+    //create new JsonObject to store info from original object
+    JSONObject songName = new JSONObject();
+    JSONArray first = new JSONArray();
+    songName = jsonObj.getJSONObject("response");
+    first = songName.getJSONArray("hits");
+    songName = first.getJSONObject(0);
+    songName = songName.getJSONObject("result");
+    String title = songName.getString("title");
+    System.out.println(title);
+
+  
+
+  
+  
+
+
+
+
+
+
+
+      //Prettifying
+    //  Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    //  JsonParser jp = new JsonParser();
+    //  JsonElement je = jp.parse(response.getBody().toString());
+
+    // JsonObject jsonObj = je.getAsJsonObject();
+    // JsonArray jsonArr = jsonObj.getAsJsonArray("response");
+    // System.out.println(jsonArr);
+    
+    
+    
+      
+    //  String prettyJsonString = gson.toJson(je);
+    //  System.out.println(prettyJsonString);
+
+
+
+    // //displaying full_title name and release_date_for_display
+    // Scanner sc = new Scanner(myUrl.openStream());
+    // JSONParser parse = new JSONParser();
+    // JSONObject jobj = (JSONObject)parse.parse(inline);
+    // JSONArray jsonarr_1 = (JSONArray) jobj.get("full_title_name");
+    //convert jason object to json array  search for response and then search for artist id or name etc
+
     }
-}
+     //new code
+    //  public static List<String> parseData(JSONObject jsonObj){
+    //   List<String> list = new ArrayList<String>();
+    //   JSONArray array = jsonObj.getJSONArray("response");
+    //   for(int f =0; f<array.length(); f++){
+    //     //list.add(array.getJSONObject(f).getString("title"));
+    //     System.out.println(String.valueOf(jsonObj.getInt("response")));
+    //   }
+    //   return list;
+    }
+
