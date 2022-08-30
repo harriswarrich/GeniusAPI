@@ -70,15 +70,73 @@ public final class App {
       
 
     JSONObject jsonObj = response.getBody().getObject();
-    ParseData parser = new ParseData();
-    List<String> songs = parser.getTopSongs(5, jsonObj);
-    System.out.println(songs);
+    
+    
+
+    //store artist's id in a String
+    JSONObject artist = new JSONObject();
+    JSONArray third = new JSONArray();
+    artist = jsonObj.getJSONObject("response");
+    third = artist.getJSONArray("hits");
+    artist = third.getJSONObject(0);
+    artist = artist.getJSONObject("result");
+    artist = artist.getJSONObject("primary_artist");
+    int artistId = artist.getInt("id");
+
+    // SECOND API CALL
+    String url2 = "https://genius.p.rapidapi.com/artists/" + artistId;
+    String query2 = String.format("s=%s",
+    URLEncoder.encode(s, charset));
+
+        HttpResponse <JsonNode> response2 = Unirest.get(host + "?" + query)
+        .header("x-rapidapi-host", x_rapidapi_host)
+        .header("x-rapidapi-key", x_rapidapi_key)
+        .asJson();
+        System.out.println(response2.getStatus());
+        System.out.println(response2.getHeaders().get("Content-Type"));
+
+        String z = "727466";
+
+      query2 = String.format("z=%s",
+      URLEncoder.encode(z, charset));    
+      response2 = Unirest.get(url2)
+     .header("x-rapidapi-host", x_rapidapi_host)
+     .header("x-rapidapi-key", x_rapidapi_key)
+     .asJson();  
+     JSONObject obj2 = response2.getBody().getObject();
+    //  System.out.println(obj2);
+    
+    // THIRD API CALL
+    String url3 = "https://genius.p.rapidapi.com/artists/" + artistId + "/songs?sort=popularity";
+    String query3 = String.format("s=%s",
+    URLEncoder.encode(s, charset));
+
+        HttpResponse <JsonNode> response3 = Unirest.get(host + "?" + query)
+        .header("x-rapidapi-host", x_rapidapi_host)
+        .header("x-rapidapi-key", x_rapidapi_key)
+        .asJson();
+        System.out.println(response3.getStatus());
+        System.out.println(response3.getHeaders().get("Content-Type"));
+
+        String y = "727466";
+
+      query3 = String.format("y=%s",
+      URLEncoder.encode(y, charset));    
+      response3 = Unirest.get(url3)
+     .header("x-rapidapi-host", x_rapidapi_host)
+     .header("x-rapidapi-key", x_rapidapi_key)
+     .asJson();  
+     JSONObject obj3 = response3.getBody().getObject();
+
+    // ParseData parser = new ParseData();
+    // List<String> songs = parser.getTopSongs(5, jsonObj);
+    // System.out.println(songs);
       //Prettifying
-    //  Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    //  JsonParser jp = new JsonParser();
-    //  JsonElement je = jp.parse(response.getBody().toString());
-    //  String prettyJsonString = gson.toJson(je);
-    //  System.out.println(prettyJsonString);
+     Gson gson = new GsonBuilder().setPrettyPrinting().create();
+     JsonParser jp = new JsonParser();
+     JsonElement je = jp.parse(response3.getBody().toString());
+     String prettyJsonString = gson.toJson(je);
+     System.out.println(prettyJsonString);
 
       }
     }
