@@ -10,13 +10,11 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import java.util.ArrayList;
-
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -69,63 +67,19 @@ public final class App {
      .header("x-rapidapi-host", x_rapidapi_host)
      .header("x-rapidapi-key", x_rapidapi_key)
      .asJson();
-
+      
 
     JSONObject jsonObj = response.getBody().getObject();
-    //create new JsonObject to store info from original object
-    JSONObject songName = new JSONObject();
-    JSONArray first = new JSONArray();
-    songName = jsonObj.getJSONObject("response");
-    first = songName.getJSONArray("hits");
-    songName = first.getJSONObject(0);
-    songName = songName.getJSONObject("result");
-    String title = songName.getString("title");
-    System.out.println(title);
-
-  
-
-  
-  
-
-
-
-
-
-
-
+    ParseData parser = new ParseData();
+    List<String> songs = parser.getTopSongs(5, jsonObj);
+    System.out.println(songs);
       //Prettifying
     //  Gson gson = new GsonBuilder().setPrettyPrinting().create();
     //  JsonParser jp = new JsonParser();
     //  JsonElement je = jp.parse(response.getBody().toString());
-
-    // JsonObject jsonObj = je.getAsJsonObject();
-    // JsonArray jsonArr = jsonObj.getAsJsonArray("response");
-    // System.out.println(jsonArr);
-    
-    
-    
-      
     //  String prettyJsonString = gson.toJson(je);
     //  System.out.println(prettyJsonString);
 
-
-
-    // //displaying full_title name and release_date_for_display
-    // Scanner sc = new Scanner(myUrl.openStream());
-    // JSONParser parse = new JSONParser();
-    // JSONObject jobj = (JSONObject)parse.parse(inline);
-    // JSONArray jsonarr_1 = (JSONArray) jobj.get("full_title_name");
-    //convert jason object to json array  search for response and then search for artist id or name etc
-
-    }
-     //new code
-    //  public static List<String> parseData(JSONObject jsonObj){
-    //   List<String> list = new ArrayList<String>();
-    //   JSONArray array = jsonObj.getJSONArray("response");
-    //   for(int f =0; f<array.length(); f++){
-    //     //list.add(array.getJSONObject(f).getString("title"));
-    //     System.out.println(String.valueOf(jsonObj.getInt("response")));
-    //   }
-    //   return list;
+      }
     }
 
