@@ -17,6 +17,7 @@ import java.util.Scanner;
 import java.util.Set;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import java.util.HashMap;
 
 public final class App {
     private App() {
@@ -83,7 +84,7 @@ public final class App {
     artist = artist.getJSONObject("primary_artist");
     int artistId = artist.getInt("id");
 
-    // SECOND API CALL
+    // SECOND API CALL    ARTIST API
     String url2 = "https://genius.p.rapidapi.com/artists/" + artistId;
     String query2 = String.format("s=%s",
     URLEncoder.encode(s, charset));
@@ -104,8 +105,7 @@ public final class App {
      .header("x-rapidapi-key", x_rapidapi_key)
      .asJson();  
      JSONObject obj2 = response2.getBody().getObject();
-    //  System.out.println(obj2);
-    
+
     // THIRD API CALL
     String url3 = "https://genius.p.rapidapi.com/artists/" + artistId + "/songs?sort=popularity";
     String query3 = String.format("s=%s",
@@ -128,15 +128,17 @@ public final class App {
      .asJson();  
      JSONObject obj3 = response3.getBody().getObject();
 
-    // ParseData parser = new ParseData();
-    // List<String> songs = parser.getTopSongs(5, jsonObj);
-    // System.out.println(songs);
+     
+
+     ParseData parser = new ParseData();
+     HashMap<String, Integer> songs = parser.getTopSongs(5, obj3);
+     System.out.println(songs);
       //Prettifying
-     Gson gson = new GsonBuilder().setPrettyPrinting().create();
-     JsonParser jp = new JsonParser();
-     JsonElement je = jp.parse(response3.getBody().toString());
-     String prettyJsonString = gson.toJson(je);
-     System.out.println(prettyJsonString);
+    //  Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    //  JsonParser jp = new JsonParser();
+    //  JsonElement je = jp.parse(response3.getBody().toString());
+    //  String prettyJsonString = gson.toJson(je);
+    //  System.out.println(prettyJsonString);
 
       }
     }

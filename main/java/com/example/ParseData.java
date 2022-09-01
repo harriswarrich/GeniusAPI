@@ -17,10 +17,11 @@ import java.util.Scanner;
 import java.util.Set;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import java.util.HashMap;
 
 public class ParseData {
     //method to display n song names
-    public ArrayList<String> getTopSongs(int n, JSONObject jsonObj){
+    public ArrayList<String> getRandomSongs(int n, JSONObject jsonObj){
         JSONObject songName = new JSONObject();
         JSONArray first = new JSONArray();
         ArrayList<String> songs = new ArrayList<String>();
@@ -49,6 +50,55 @@ public class ParseData {
         }
         return dates;
     }
-
-    
+    //method to save artirtId;
+    public void getArtistId(JSONObject jsonObj){
+        JSONObject artist = new JSONObject();
+        JSONArray third = new JSONArray();
+        artist = jsonObj.getJSONObject("response");
+        third = artist.getJSONArray("hits");
+        artist = third.getJSONObject(0);
+        artist = artist.getJSONObject("result");
+        artist = artist.getJSONObject("primary_artist");
+        int artistId = artist.getInt("id");
     }
+    //metod to display alternate names of the artist
+    public JSONArray getAlternateNames(JSONObject obj2){
+        JSONObject alternateNames = new JSONObject();
+        JSONArray fourth = new JSONArray();
+        alternateNames = obj2.getJSONObject("response");
+        alternateNames = alternateNames.getJSONObject("artist");
+        fourth = alternateNames.getJSONArray("alternate_names");
+        return fourth;
+    }
+    //method to display their social media handles
+    public String getSoicalMedias(JSONObject obj2){
+        JSONObject socialMedia = new JSONObject();
+        socialMedia = obj2.getJSONObject("response");
+        socialMedia = socialMedia.getJSONObject("artist");
+        String facebook = socialMedia.getString("facebook_name");
+        String instagram = socialMedia.getString("instagram_name");
+        String twitter = socialMedia.getString("twitter_name");
+        return "facebook: " + facebook + " " + "instagram: " + instagram + " " + "twitter: " + twitter;
+    }
+    //method to display their top n songs and their corresponding page views
+    public HashMap<String, Integer> getTopSongs(int p, JSONObject obj3){
+     JSONObject topSongs = new JSONObject();
+     JSONArray store = new JSONArray();
+     JSONArray views = new JSONArray();
+     ArrayList popularSongs = new ArrayList();
+     ArrayList pageViews = new ArrayList();
+     HashMap<String, Integer> hotSongs = new HashMap<String, Integer>();
+     for(int g = 0; g < p; g++){
+        topSongs = obj3.getJSONObject("response");
+        store = topSongs.getJSONArray("songs");
+        topSongs = store.getJSONObject(g);
+        String topTitle = topSongs.getString("title");
+        topSongs = topSongs.getJSONObject("stats");
+        int viewsList = topSongs.getInt("pageviews");
+        hotSongs.put(topTitle, viewsList);
+     }
+     return hotSongs;
+    }
+}
+    
+    
